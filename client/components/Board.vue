@@ -44,7 +44,7 @@ import _ from 'lodash'
 import Bomb from './Bomb'
 import BoardGrid from '../services/board-grid'
 import { generateBombs } from '../services/bomb-creator'
-import Sequenza from 'sequenza'
+import async from 'neo-async'
 
 export default {
   components: {
@@ -52,8 +52,8 @@ export default {
   },
   data () {
     return {
-      rows: 12,
-      cols: 12
+      rows: 6,
+      cols: 6
     }
   },
 
@@ -63,7 +63,7 @@ export default {
     this.$store.commit('setBoardGrid', grid)
   },
   mounted () {
-    this.startBombingRun(5)
+    this.startBombingRun()
   },
   computed: {
     gridStyle() {
@@ -76,48 +76,53 @@ export default {
     ])
   },
   methods: {
+
     getRandomUnoccupied () {
-      let unoccupied = this.grid.getUnoccupiedIndexes()
-      unoccupied = unoccupied[_.random(unoccupied.length)]
-      return this.grid.coordsAt(unoccupied)
+      /**
+       * This gets random unoccupied coordinates. If the board is full and there aren't
+       * any open tiles, we'll check again every 0.5 sec and resolve once available.
+       */
+      return new Promise(resolve => {
+        let coords = this.grid.getRandomUnoccupiedCoords()
+        async.until(
+          () => (coords !== undefined),
+          (done) => {
+            console.log('coords undefined, trying again')
+            setTimeout(() => {
+              coords = this.grid.getRandomUnoccupiedCoords()
+              done()
+            }, 500)
+          },
+          (err, results) =>  resolve(coords)
+        )
+      })
     },
 
     startBombingRun (amount) {
       /**
-       * Triggers the bomb run. Each bomb gets pushed into a delayed queue,
-       * and once ready it will be pushed onto the boards grid.
+       * Triggers the bomb run. Each bomb gets pushed into a delayed queue, and once
+       * ready (and a spot is available) it will be pushed onto the boards grid.
        */
       const self = this;
       const bombs = generateBombs();
-      var sequenza = new Sequenza();
+      const delay = ms => new Promise(r => setTimeout(r, ms))
 
-      bombs.forEach((bomb, index) => {
-        sequenza.queue({
-          callback () {
-            let coords = undefined;
+      /**
+       * Map every bomb to an async function that's delayed according to the bombs interval.
+       * We'll wait until coordinates are available before pushing.
+       *
+       * So if the player sucks and the board is full, all bombs wait.
+       */
+      const steps = bombs.map((bomb, index) => async function (done) {
+          const timeout = (index == 0) ? 0 : (bomb.interval * 1000);  // No delay for the first bomb
+          await delay(timeout)
+          bomb['coords'] = await self.getRandomUnoccupied()
+          self.$store.commit('pushBombToGrid', {bomb})
+          done(null)
+        }
+      )
 
-            checkCoords: while (coords === undefined) {
-              /**
-               * Something is broken with the random coordinate function and it
-               * passes undefined, but I'm on limited time so here is a quick
-               * hack to keep things running
-               */
-                coords = self.getRandomUnoccupied()
-                if (coords === undefined) {
-                  coords = self.getRandomUnoccupied()
-                }
-            }
-
-            bomb['coords'] = coords
-            self.$store.commit('pushBombToGrid', {bomb})
-          },
-          delay: (index == 0) ? 0 : (bomb.interval * 1000)
-        })
-      })
-
-      sequenza.start({
-        iterations: 1
-      });
+      async.series(steps)
     }
   }
 }

@@ -56,6 +56,12 @@ class BoardGrid extends ArrayGrid {
   getUnoccupiedIndexes () {
     return this.unoccupied
   }
+
+  getRandomUnoccupiedCoords () {
+    let unoccupied = this.getUnoccupiedIndexes()
+    unoccupied = unoccupied[_.random(unoccupied.length)]
+    return this.coordsAt(unoccupied)
+  }
 }
 
 export { BoardGrid as default }

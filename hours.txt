@@ -1,6 +1,6 @@
 Category Totals (in hours)
 -----------------------------------------------------------
-Board & Grid: 	 2
+Board & Grid: 	 3.5
 Bombs: 			 3
 Design:			 0
 Setup & Config:  0.5
@@ -17,3 +17,6 @@ Log
 	Spent more time than I should have trying to make a smooth timing function for the bomb interval, hopefully I can revisit it
 	I need to move the ongoing process for pushing bombs to the grid out of the board component. I think some async would work fine but a webworker might be cleaner.
 	Spent like 15 minutes checking out some free pixel art assets. In my head it looks so cute. Retro 8-bit bomberman style.
+
+20180220: 1.5 hours
+	Cleaned up the logic for queing/delaying bombs and waiting for unnoccuplied tiles to open up
