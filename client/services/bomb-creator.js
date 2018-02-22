@@ -76,6 +76,7 @@ export function generateBombs () {
   return _.transform(timings, (result, bomb, n) => {
     bomb['id'] = `bomb-${n}`
     bomb['live'] = true
+    bomb['detonated'] = false
     bomb['color'] = colors[n]
 
     result.push(bomb)
