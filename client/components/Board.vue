@@ -2,6 +2,7 @@
 .board {
   height: 100%;
   width: 100%;
+  min-width: 800px;
   max-width: 1200px;
   text-align: center;
   font-size: 1rem;
@@ -67,7 +68,6 @@ import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import Bin from './Bin'
 import Bomb from './Bomb'
-import VueCountdown from '@xkeshi/vue-countdown'
 import BoardGrid from '../services/board-grid'
 import { generateBombs } from '../services/bomb-creator'
 import async from 'neo-async'
@@ -76,12 +76,12 @@ import { Draggable } from '../utils/draggable-directive'
 const delay = ms => new Promise(r => setTimeout(r, ms))
 
 export default {
-  components: { Bin, Bomb, 'countdown': VueCountdown },
+  components: { Bin, Bomb},
   directives: { Draggable },
   data () {
     return {
       rows: 6,
-      cols: 6,
+      cols: 7,
       playing: false
     }
   },
@@ -93,7 +93,6 @@ export default {
   mounted () {
     this.playing = true;
     this.startBombingRun()
-    this.startBinShuffle()
   },
   computed: {
     gridStyle() {
@@ -186,18 +185,6 @@ export default {
         }
       )
       async.series(steps)
-    },
-
-    startBinShuffle () {
-      async.whilst(
-        () => (this.playing === true),
-        (done) => {
-          delay(40 * 1000).then(() => {
-            this.$store.dispatch('shuffleBins')
-            done()
-          })
-        }
-      )
     }
   }
 }

@@ -25,24 +25,80 @@ html, body {
         border-radius: 2px;
     }
 }
+
+header {
+    padding: 0 0.5rem;
+    display: grid;
+    grid-auto-columns: 1fr;
+
+    .score, .title {
+        grid-row: 1;
+        text-shadow: 3px 3px 1px black;
+    }
+    .score {
+        text-align: left;
+    }
+    .title {
+        text-align: right;
+    }
+
+}
+
+.ground {
+    align-self: end;
+    text-align: right;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: right;
+
+    > span {
+        text-shadow: 3px 3px 1px black;
+        margin-right: 10%;
+    }
+}
 </style>
 
 <template>
   <div id="app">
-      <h2  style="align-self:start">BOMBSQUAD</h2>
+      <header>
+        <h6 class="score">SCORE: {{disarmedBombs.length}}</h6>
+        <h3 class="title">BOMBSQUAD</h3>
+      </app>
+      </header>
       <board></board>
-      <div class="ground ground1--repeat" style="align-self:end"></div>
+      <div class="ground ground1--repeat" style="align-self:end">
+        <countdown :time="10 * 1000" :leadingZero="false" v-on:countdownend="shuffleBins" ref="countdown">
+            <template slot-scope="props">Bin swap in: {{ props.seconds }}</template>
+        </countdown>
+      </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Scenery from 'components/Scenery'
 import Board from 'components/Board'
 
+import VueCountdown from '@xkeshi/vue-countdown'
 export default {
   components: {
     Scenery,
-    Board
+    Board,
+    'countdown': VueCountdown
+  },
+  computed: {
+    ...mapGetters([
+      'disarmedBombs'
+    ])
+  },
+  methods: {
+    shuffleBins () {
+        this.$store.dispatch('shuffleBins')
+        this.$refs.countdown.init()
+        this.$refs.countdown.start()
+    }
   }
 }
 </script>
