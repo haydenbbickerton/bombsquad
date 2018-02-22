@@ -1,25 +1,30 @@
 <style scoped>
 .bomb {
   pointer-events: none;
-  border-radius: 24px;
   width: 48px;
   height: 48px;
-  border: 2px solid black;
   text-align: center;
   line-height: 48px;
-  font-size: 1rem;
-  color: white;
   background-color: black;
   z-index: 100;
+  background: url('/static/img/sprites/bombs.png') no-repeat;
+  background-size: 48px auto;
+  background-position: center auto;
+
+  .lifetime {
+    color: white;
+    padding-top: 5px;
+    font-size: 0.5rem;
+  }
 
   &.bomb--blue {
-    background-color: blue;
+    background-position: 0px -0px;
   }
   &.bomb--green {
-    background-color: green;
+    background-position: 0px -56px;
   }
   &.bomb--red {
-    background-color: red;
+    background-position: 0px -112px;
   }
 }
 
