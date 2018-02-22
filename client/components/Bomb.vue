@@ -1,13 +1,16 @@
 <style scoped>
 .bomb {
+  pointer-events: none;
   border-radius: 24px;
   width: 48px;
   height: 48px;
+  border: 2px solid black;
   text-align: center;
   line-height: 48px;
   font-size: 1rem;
   color: white;
   background-color: black;
+  z-index: 100;
 
   &.bomb--blue {
     background-color: blue;
@@ -18,22 +21,42 @@
   &.bomb--red {
     background-color: red;
   }
+}
 
-  /* TODO: a cute little explosion animation, if time allows */
+.explosion {
+  width: 96px;
+  height: 96px;
+  margin-top:-48px;
+  margin-left: -24px;
+  background: url('/static/img/sprites/explosion-4.png') left center;
+  background-size: 1152px 96px;
+  animation: explode 1s steps(12) 1;
+  z-index: 100;
+}
+
+@keyframes explode {
+    100% { background-position: -1152px; }
 }
 </style>
 
 <template>
   <div class="bomb-wrapper">
-    <div class="bomb" v-bind:class="[bombColorClass]">
-      <div class="lifetime">
-        <countdown :time="bomb.lifetime * 1000" :leadingZero="false" v-on:countdownend="explode">
-          <template slot-scope="props">{{ props.seconds }}</template>
-        </countdown>
+    <div v-if="!exploding">
+      <div class="bomb" v-bind:class="[bombColorClass]">
+        <div class="lifetime">
+          <countdown :time="bomb.lifetime * 1000" :leadingZero="false" v-on:countdownend="timesUp">
+            <template slot-scope="props">{{ props.seconds }}</template>
+          </countdown>
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <div class="explosion">
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import VueCountdown from '@xkeshi/vue-countdown'
@@ -42,16 +65,40 @@ export default {
   props: ['bomb'],
   data () {
     return {
-      bombColorClass: `bomb--${this.bomb.color}`
+      bombColorClass: `bomb--${this.bomb.color}`,
+      exploding: false,
+      armedNoise: new Audio('/static/audio/extraShip.wav'), // From asteroids arcade game
+      explosionNoise: new Audio('/static/audio/bangSmall.wav')
+    }
+  },
+  computed: {
+    hasBeenDetonated () {
+      return this.bomb.detonated
     }
   },
   components: {
     'countdown': VueCountdown
   },
+  mounted () {
+    this.armedNoise.play()
+  },
+  destroyed () {
+    this.$store.commit('removeBombFromGrid', {bomb: this.bomb})
+  },
   methods: {
+    timesUp() {
+      this.$store.dispatch('detonateBomb', this.bomb)
+    },
     explode() {
-      this.bomb.live = false;
-      this.$store.commit('removeBombFromGrid', {bomb: this.bomb})
+      this.exploding = true
+      this.explosionNoise.play()
+    }
+  },
+  watch: {
+    hasBeenDetonated: function (val, oldVal) {
+      if (val === true && oldVal === false) {
+        this.explode()
+      }
     }
   }
 }
