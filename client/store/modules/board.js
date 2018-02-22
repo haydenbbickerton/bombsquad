@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import _ from 'lodash'
 
 const state = {
@@ -6,13 +7,17 @@ const state = {
 
 // getters
 const getters = {
-  grid: state => state.grid
+  grid: state => state.grid,
+
+  placedBombs: (state, getters, rootState, rootGetters) => {
+    const bombs = rootGetters.bombs
+    return getters.grid.data.map(bombId => bombs[bombId])
+  }
 }
 
 // actions
 const actions = {
   addBombToBoard ({ state, commit }, bomb) {
-    // console.log(`adding bomb to board ${bomb.id} at ${bomb.coords}`)
     if (!bomb.isArmed) {
       commit('pushBombToGrid', bomb)
     }
@@ -22,7 +27,7 @@ const actions = {
 // mutations
 const mutations = {
   pushBombToGrid (state, { bomb }) {
-    state.grid.set(bomb.coords[0], bomb.coords[1], bomb)
+    state.grid.set(bomb.coords[0], bomb.coords[1], bomb.id)
   },
 
   removeBombFromGrid (state, { bomb }) {
