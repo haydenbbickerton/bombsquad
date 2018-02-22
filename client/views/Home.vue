@@ -69,7 +69,7 @@ header {
       </header>
       <board></board>
       <div class="ground ground1--repeat" style="align-self:end">
-        <countdown :time="10 * 1000" :leadingZero="false" v-on:countdownend="shuffleBins" ref="countdown">
+        <countdown :time="40 * 1000" :leadingZero="false" v-on:countdownend="shuffleBins" ref="countdown">
             <template slot-scope="props">Bin swap in: {{ props.seconds }}</template>
         </countdown>
       </div>
