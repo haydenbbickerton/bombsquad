@@ -3,7 +3,7 @@
 This is a demo project created using vue.js.
 
 
-![Gif](https://i.imgur.com/2Wo0bdW.gifv)
+![gif](https://thumbs.gfycat.com/DismalShadowyAntipodesgreenparakeet-size_restricted.gif)
 
 
 To start:
@@ -15,6 +15,7 @@ $ yarn install
 To run:
 
 ```bash
-$ npm run dev```
+$ npm run dev
+```
 
 And open [localhost:4000](http://localhost:4000) in your browser
