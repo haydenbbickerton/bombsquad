@@ -1,24 +1,27 @@
 <style scoped>
 .bin {
   display: grid;
-  width: 150px;
-  height: 150px;
+  width: 82px;
+  height: 64px;
   text-align: center;
   line-height: 48px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: white;
   background-color: black;
   z-index: 50;
   margin: auto;
+  background: url('/static/img/sprites/carts.png') no-repeat;
+  overflow: hidden;
+  transform-origin: bottom;
 
   &.bin--blue {
-    background-color: blue;
+    background-position: -5px -0px;
   }
   &.bin--green {
-    background-color: green;
+    background-position: -5px -69px;
   }
   &.bin--red {
-    background-color: red;
+    background-position: -5px -138px;
   }
   .disarmed-count {
     margin: auto;
@@ -28,7 +31,7 @@
 
 <template>
   <div class="bin-wrapper">
-    <div class="bin" v-bind:class="[binColorClass]" v-bind:style="{transform: binSize}">
+    <div class="bin" v-bind:class="[binColorClass]" v-bind:style="{transform: binSize, filter: binFilter}">
       <div class="disarmed-count">
         {{disarmedCount}}
       </div>
@@ -48,7 +51,11 @@ export default {
     },
     binSize () {
       const increase = this.disarmedCount * 0.01
-      return `scale(${1 + increase})`
+      return `scale(${1.25 + increase})`
+    },
+    binFilter () {
+      const increase = this.disarmedCount * 10
+      return `saturate(${100 + increase}%)`
     },
     disarmedCount () {
       return this.disarmedBombs.filter(bomb => {

@@ -1,11 +1,10 @@
 <style scoped>
 .board {
-  width: 100%;
   height: 100%;
+  width: 100%;
   max-width: 1200px;
   text-align: center;
   font-size: 1rem;
-  background-color: #f2f2f2;
   display: grid;
   margin: auto;
 }
@@ -59,6 +58,7 @@
           </div>
       </div>
     </div>
+
 </template>
 
 <script>
@@ -67,9 +67,9 @@ import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import Bin from './Bin'
 import Bomb from './Bomb'
+import VueCountdown from '@xkeshi/vue-countdown'
 import BoardGrid from '../services/board-grid'
 import { generateBombs } from '../services/bomb-creator'
-
 import async from 'neo-async'
 import { Draggable } from '../utils/draggable-directive'
 
@@ -192,7 +192,7 @@ export default {
       async.whilst(
         () => (this.playing === true),
         (done) => {
-          delay(10 * 1000).then(() => {
+          delay(40 * 1000).then(() => {
             this.$store.dispatch('shuffleBins')
             done()
           })
