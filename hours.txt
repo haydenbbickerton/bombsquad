@@ -1,11 +1,12 @@
 Category Totals (in hours)
 -----------------------------------------------------------
+Bins:            1
 Board & Grid: 	 3.5
 Bombs: 			 3
 Design:			 0
+Drag & Drop:     3
 Setup & Config:  0.5
-Vuex Store:      0.5
-
+Vuex Store:      1.5
 
 
 Log
@@ -20,3 +21,10 @@ Log
 
 20180220: 1.5 hours
 	Cleaned up the logic for queing/delaying bombs and waiting for unnoccuplied tiles to open up
+
+20180221: 5.5 hours
+	Added bins component and store
+	Added bombs store
+	Added logic for dragging-dropping, and triggering explosions when bomb runs out or is dropped on wrong bin.
+	I need to move stuff out of the Board component, too much going on in there
+	Need to add backgrounds and textures. Found some free sounds from asteroids arcade game that I used for the bombs.
