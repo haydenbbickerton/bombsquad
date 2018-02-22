@@ -5,7 +5,7 @@ Board & Grid: 	 3.5
 Bombs: 			 3
 Design:			 2.5
 Drag & Drop:     3
-Setup & Config:  0.5
+Setup & Config:  1
 Vuex Store:      1.5
 
 
@@ -29,7 +29,8 @@ Log
 	I need to move stuff out of the Board component, too much going on in there
 	Need to add backgrounds and textures. Found some free sounds from asteroids arcade game that I used for the bombs.
 
-20180222: 2.5 hours
+20180222: 4.5 hours
 	Added backgrounds and cart sprites
 	Removed vue-router since it wasn't needed
-
+	Added bomb sprites, score counts and bin countdowns
+	Updated readme
