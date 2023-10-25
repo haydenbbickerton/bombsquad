@@ -74,9 +74,19 @@ module.exports = {
       {
         from: _.cwd('./static'),
         // to the root of dist path
-        to: './'
+        to: './static'
       }
-    ])
+    ]),
+    {
+      apply: (compiler) => {
+          compiler.plugin('done', () => {
+            console.log('Compile is done !')
+            setTimeout(() => {
+              process.exit(0)
+            })
+          })
+      }
+   }
   ],
   target: _.target
 }
