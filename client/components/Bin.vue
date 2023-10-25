@@ -10,7 +10,7 @@
   background-color: black;
   z-index: 50;
   margin: auto;
-  background: url('/static/img/sprites/carts.png') no-repeat;
+  background: url('/bombsquad/static/img/sprites/carts.png') no-repeat;
   overflow: hidden;
   transform-origin: bottom;
 

@@ -3,13 +3,13 @@
 
 .ground2, .ground1, .bush1, .bush2, .tree1, 
 .tree2, .cliff-left, .cliff-right
-{ display: inline-block; background: url('/static/img/sprites/tileset.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: left; }
+{ display: inline-block; background: url('/bombsquad/static/img/sprites/tileset.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: left; }
 
 .ground2 { background-position: -5px -0px; width: 128px; height: 101px; }
 .ground1 {
   background-position: -5px -106px; width: 96px; height: 105px;
   &--repeat {
-    background: url('/static/img/ground1.png') repeat-x;
+    background: url('/bombsquad/static/img/ground1.png') repeat-x;
     width: 100%;
     height: 105px;
   }

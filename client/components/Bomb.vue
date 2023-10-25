@@ -7,7 +7,7 @@
   line-height: 48px;
   background-color: black;
   z-index: 100;
-  background: url('/static/img/sprites/bombs.png') no-repeat;
+  background: url('/bombsquad/static/img/sprites/bombs.png') no-repeat;
   background-size: 48px auto;
   background-position: center auto;
 
@@ -33,7 +33,7 @@
   height: 96px;
   margin-top:-48px;
   margin-left: -24px;
-  background: url('/static/img/sprites/explosion-4.png') left center;
+  background: url('/bombsquad/static/img/sprites/explosion-4.png') left center;
   background-size: 1152px 96px;
   animation: explode 1s steps(12) 1;
   z-index: 100;
@@ -72,8 +72,8 @@ export default {
     return {
       bombColorClass: `bomb--${this.bomb.color}`,
       exploding: false,
-      armedNoise: new Audio('/static/audio/extraShip.wav'), // From asteroids arcade game
-      explosionNoise: new Audio('/static/audio/bangSmall.wav')
+      armedNoise: new Audio('/bombsquad/static/audio/extraShip.wav'), // From asteroids arcade game
+      explosionNoise: new Audio('/bombsquad/static/audio/bangSmall.wav')
     }
   },
   computed: {

@@ -13,7 +13,7 @@ html, body {
     display: grid;
     text-align: center;
     color: white;
-    background: url('/static/img/background.png') no-repeat;
+    background: url('/bombsquad/static/img/background.png') no-repeat;
     background-position: center bottom;
     background-size: 100% auto;
     grid-template-rows: 200px 1fr auto;
